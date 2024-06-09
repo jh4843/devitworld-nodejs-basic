@@ -5,8 +5,9 @@ node.js basic tutorial repository
 ## Initialize Proejct
 
 ```
+$ npm init -y
 $ npm install express
-$ npm install typescript ts-node @types/node @types/express --save-dev
+$ npm install typescript ts-node ts-node-dev @types/node @types/express --save-dev
 $ tsc --init
 ```
 
