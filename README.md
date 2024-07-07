@@ -37,6 +37,12 @@ $ tsc --init
   "scripts":
   {
     "start": "ts-node src/index.ts",
+    or
+    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts"
   }
 }
 ```
+
+## tree
+
+tree -I 'node_modules|dist'
