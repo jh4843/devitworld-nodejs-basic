@@ -6,8 +6,8 @@ node.js basic tutorial repository
 
 ```
 $ npm init -y
-$ npm install express
-$ npm install typescript ts-node ts-node-dev @types/node @types/express --save-dev
+$ npm install ws
+$ npm install typescript ts-node ts-node-dev @types/node @types/ws --save-dev
 $ npx tsc --init
 ```
 
@@ -38,7 +38,7 @@ $ npx tsc --init
   {
     "start": "ts-node src/index.ts",
     or
-    "start": "nodemon"
+    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts"
   }
 }
 ```
