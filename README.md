@@ -11,6 +11,10 @@ $ npm install typescript ts-node ts-node-dev @types/node @types/express --save-d
 $ npx tsc --init
 ```
 
+## Test 시 설치
+
+$ npm install --save-dev mocha chai @types/mocha @types/chai
+
 ## Basic Setting
 
 ### tsconfig.json

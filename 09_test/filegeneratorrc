@@ -1,0 +1,18 @@
+{
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".git",
+    "test"
+  ],
+  "include": [
+    "src",
+    "package.json",
+    "tsconfig.json"
+  ],
+  "extensions": [
+    ".ts",
+    "js",
+    ".json"
+  ]
+}
