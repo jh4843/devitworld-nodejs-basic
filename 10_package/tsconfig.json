@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": ".",
+    "strict": true,  // 엄격한 타입 검사를 사용
+    "esModuleInterop": true,  // ES 모듈과 CommonJS 모듈 간의 호환성 설정
+    "skipLibCheck": true,  // 라이브러리의 타입 검사를 건너뜀
+    "forceConsistentCasingInFileNames": true  // 파일 이름 대소문자 일관성 검사
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

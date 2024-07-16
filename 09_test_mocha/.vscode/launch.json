@@ -10,7 +10,7 @@
         "--timeout",
         "10000",
         "--import=tsx",
-        "test/**/*.test.ts",
+        "test/**/*.spec.ts",
         "--exit"
       ],
       "internalConsoleOptions": "openOnSessionStart",

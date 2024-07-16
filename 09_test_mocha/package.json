@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 10000 --import=tsx test/**/*.test.ts --exit",
+    "test": "mocha --timeout 10000 --import=tsx test/**/*.spec.ts --exit",
     "start": "nodemon --exec tsx src/app.ts"
   },
   "keywords": [],
