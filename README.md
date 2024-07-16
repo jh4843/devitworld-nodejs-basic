@@ -2,12 +2,17 @@
 
 node.js basic tutorial repository
 
+## basic install
+```
+$ npm install -g nodemon
+```
+
 ## Initialize Proejct
 
 ```
 $ npm init -y
 $ npm install express
-$ npm install typescript ts-node ts-node-dev @types/node @types/express --save-dev
+$ npm install typescript tsx @types/node @types/express --save-dev
 $ npx tsc --init
 ```
 
@@ -42,7 +47,7 @@ $ npm install --save-dev mocha chai @types/mocha @types/chai
   {
     "start": "ts-node src/index.ts",
     or
-    "start": "nodemon"
+    "start": "nodemon --exec ts-node src/app.ts"
   }
 }
 ```
