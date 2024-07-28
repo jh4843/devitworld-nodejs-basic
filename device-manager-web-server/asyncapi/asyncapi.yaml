@@ -1,0 +1,116 @@
+asyncapi: '2.0.0'
+info:
+  title: My API
+  version: '1.0.0'
+  description: This is an API that supports both REST and WebSocket.
+
+servers:
+  restServer:
+    url: 'http://localhost:3000'
+    protocol: 'http'
+  wsServer:
+    url: 'ws://localhost:3000/ws'
+    protocol: 'ws'
+
+channels:
+  /api/patients:
+    description: REST endpoint for patient data.
+    x-group: REST API
+    subscribe:
+      operationId: getPatients
+      summary: Retrieve patient data.
+      message:
+        contentType: application/json
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Patient'
+    publish:
+      operationId: createPatient
+      summary: Create a new patient.
+      message:
+        contentType: application/json
+        payload:
+          $ref: '#/components/schemas/Patient'
+
+  /api/studies:
+    description: REST endpoint for study data.
+    x-group: REST API
+    subscribe:
+      operationId: getStudies
+      summary: Retrieve study data.
+      message:
+        contentType: application/json
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Study'
+    publish:
+      operationId: createStudy
+      summary: Create a new study.
+      message:
+        contentType: application/json
+        payload:
+          $ref: '#/components/schemas/Study'
+
+  /ws/newPatient:
+    description: WebSocket channel for new patient updates.
+    x-group: WebSocket
+    subscribe:
+      operationId: newPatient
+      summary: Subscribe to new patient updates.
+      message:
+        contentType: application/json
+        payload:
+          $ref: '#/components/messages/NewPatient'
+
+  /ws/newStudy:
+    description: WebSocket channel for new study updates.
+    x-group: WebSocket
+    subscribe:
+      operationId: newStudy
+      summary: Subscribe to new study updates.
+      message:
+        contentType: application/json
+        payload:
+          $ref: '#/components/messages/NewStudy'
+
+components:
+  schemas:
+    Patient:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+        birthDate:
+          type: string
+          format: date
+
+    Study:
+      type: object
+      properties:
+        studyId:
+          type: string
+        description:
+          type: string
+        patientId:
+          type: string
+
+  messages:
+    NewPatient:
+      name: NewPatient
+      title: New Patient Message
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/Patient'
+
+    NewStudy:
+      name: NewStudy
+      title: New Study Message
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/Study'
