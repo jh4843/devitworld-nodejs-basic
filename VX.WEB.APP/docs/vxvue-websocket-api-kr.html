@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>vxvue-websocket-api-kr.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="vxvue-integration-websocket-api">VXvue Integration WebSocket API</h1>
+<h2 id="1-%EC%86%8C%EA%B0%9C">1. 소개</h2>
+<p>다음 WebSocket API는 각종 장치와 Websocket을 통하여 실시간 양방향 통신을 가능하게 합니다.</p>
+<p>이를 통하여 VXvue로부터 환자 정보, 검사 정보, 이미지 정보 등 다양한 데이터를 전송 및 수신할 수 있는 API를 제공합니다.</p>
+<h2 id="2-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%B3%B4">2. 연결 정보</h2>
+<ul>
+<li>통신 방식: Websocket</li>
+<li><strong>WebSocket URL</strong>: <code>ws://{IP address}:{Port Number}</code></li>
+<li>기본 IP 주소: <code>localhost</code></li>
+<li>기본 Port 정보: <code>55111</code></li>
+</ul>
+<p>⚠️ 클라이언트는 WebSocket 서버에 연결한 후, 자신의 타입을 등록하기 위해 register 명령을 서버로 전송해야 합니다. 이 명령을 수행하지 않으면 적절한 메시지를 수신하지 못할 수 있습니다.</p>
+<h2 id="3-%EB%A9%94%EC%8B%9C%EC%A7%80-%ED%9D%90%EB%A6%84">3. 메시지 흐름</h2>
+<h3 id="vxvuevss%EC%97%90%EC%84%9C-%EC%9E%A5%EC%B9%98%EB%A1%9C-%EC%A0%84%EC%86%A1">VXvue(VSS)에서 장치로 전송</h3>
+<p>이 WebSocket API의 워크플로우는 VXvue(VSS)로부터 수신 타입에 메시지를 전송하도록 설계되어 있습니다. 흐름은 다음과 같습니다:</p>
+<ol>
+<li>클라이언트가 서버에 연결한 후 <a href="#requester-client">등록명령</a>을 서버에 전송하여 <a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">클라이언트 타입: sender 참조</a>을 등록합니다.</li>
+<li>VXvue(VSS)가 디스플레이 이벤트를 WebSocket 서버로 전송합니다.</li>
+<li>WebSocket 서버는 이벤트를 수신하고 이를 처리합니다.</li>
+<li>서버는 이벤트를 모든 연결된 장치(예: 두 번째 모니터)로 브로드캐스트합니다.</li>
+<li>각 클라이언트는 이벤트를 수신하고 적절히 처리할 수 있습니다 (예: UI 업데이트).</li>
+</ol>
+<h2 id="4-%EB%A9%94%EC%8B%9C%EC%A7%80">4. 메시지</h2>
+<h3 id="%EC%A0%95%EC%9D%98">정의</h3>
+<p>WebSocket 연결을 통해 송수신되는 메시지는 JSON 형식입니다.</p>
+<p>아래는 클라이언트가 사용할 메시지 구조와 서버가 처리할 수 있는 명령어의 유형을 나타냅니다.</p>
+<h3 id="%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의</h3>
+<ul>
+<li>sender: 송신자(최초 이벤트 발생자) 타입
+<ul>
+<li>Type: number</li>
+<li>Values
+<ul>
+<li>0: [default] Not Registered</li>
+<li>1: VXvueWebServer (me)</li>
+<li>2: VXvue(VSS)</li>
+<li>106: Display</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>receiver: 수신자 타입
+<ul>
+<li>Type: number | null</li>
+<li>Values
+<ul>
+<li>0: All</li>
+<li>1: VXvueWebServer</li>
+<li>2: VXvue(VSS)</li>
+<li>106: Display</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>command: 커멘드
+<ul>
+<li>Type: number</li>
+<li>Values: <a href="#4-1-commands">4-1 Commands 참조</a></li>
+</ul>
+</li>
+<li>res: 응답 결과
+<ul>
+<li>Type: number | string | null</li>
+<li>Values: <a href="#4-1-commands">4-1 Commands 참조</a></li>
+</ul>
+</li>
+<li>data: 데이터
+<ul>
+<li>Type: json | null</li>
+</ul>
+</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"sender"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"receiver"</span>: <span class="hljs-number">106</span>,
+    <span class="hljs-attr">"command"</span>: <span class="hljs-number">101</span>,
+    <span class="hljs-attr">"res"</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// 1: true, 0: failure</span>
+    <span class="hljs-attr">"data"</span>: {
+        <span class="hljs-attr">"patientID"</span>: <span class="hljs-string">"pt-1878"</span>,
+        <span class="hljs-attr">"patientName"</span>: <span class="hljs-string">"json"</span>,
+        <span class="hljs-attr">"patientSex"</span>: <span class="hljs-number">1</span>,
+        <span class="hljs-attr">"patientBirthDate"</span>: <span class="hljs-string">"19990121"</span>
+    }
+}
+</div></code></pre>
+<h3 id="4-1-commands">4-1 Commands</h3>
+<h4 id="ping">Ping</h4>
+<ul>
+<li>
+<p>Description</p>
+<ul>
+<li>통신 연결 상태를 확인합니다.</li>
+</ul>
+</li>
+<li>
+<p>Client Request</p>
+<ul>
+<li>sender:
+<ul>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: sender 참조</a></li>
+</ul>
+</li>
+<li>command:
+<ul>
+<li>1 (ping)</li>
+</ul>
+</li>
+<li>example<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"sender"</span>: <span class="hljs-number">106</span>,
+  <span class="hljs-attr">"command"</span>: <span class="hljs-number">1</span>
+}
+</div></code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Server Response</p>
+<ul>
+<li>sender:
+<ul>
+<li>1 (VXvueWebServer)</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: sender 참조</a></li>
+</ul>
+</li>
+<li>command:
+<ul>
+<li>1 (ping)</li>
+</ul>
+</li>
+<li>data
+<ul>
+<li>status
+<ul>
+<li>0 (fail)</li>
+<li>1 (success)</li>
+</ul>
+</li>
+<li>error
+<ul>
+<li>number | null</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>example</li>
+</ul>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"sender"</span>: <span class="hljs-number">1</span>,   <span class="hljs-comment">// 1: VXvueWebServer </span>
+  <span class="hljs-attr">"command"</span>: <span class="hljs-number">1</span>,  <span class="hljs-comment">// 1: ping</span>
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"status"</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// 0: fail, 1: success, </span>
+  }
+}
+</div></code></pre>
+</li>
+</ul>
+<h4 id="requester-client">Requester Client</h4>
+<ul>
+<li>
+<p>Description</p>
+<ul>
+<li>Client Type을 Server에 등록합니다.</li>
+</ul>
+</li>
+<li>
+<p>Client Request</p>
+<ul>
+<li>sender:
+<ul>
+<li>모두 가능</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: sender 참조</a></li>
+</ul>
+</li>
+<li>command:
+<ul>
+<li>11 (requesterClient)</li>
+</ul>
+</li>
+<li>example<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"sender"</span>: <span class="hljs-number">106</span>,
+  <span class="hljs-attr">"command"</span>: <span class="hljs-number">11</span>
+}
+</div></code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Server Response</p>
+<ul>
+<li>sender:
+<ul>
+<li>1 (VXvueWebServer)</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: sender 참조</a></li>
+</ul>
+</li>
+<li>command:
+<ul>
+<li>11 (registerClient)</li>
+</ul>
+</li>
+<li>data
+<ul>
+<li>status
+<ul>
+<li>0 (fail)</li>
+<li>1 (success)</li>
+</ul>
+</li>
+<li>error
+<ul>
+<li>number | null</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>example</li>
+</ul>
+<pre class="hljs"><code><div>  {
+    <span class="hljs-attr">"sender"</span>: <span class="hljs-number">1</span>,    <span class="hljs-comment">// 1: VXvueWebServer </span>
+    <span class="hljs-attr">"command"</span>: <span class="hljs-number">11</span>,  <span class="hljs-comment">// 11: requesterClient</span>
+    <span class="hljs-attr">"data"</span>: {
+      <span class="hljs-attr">"status"</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// 0: fail, 1: success, </span>
+    }
+  }
+</div></code></pre>
+</li>
+</ul>
+<h4 id="send-patient-information">Send Patient Information</h4>
+<ul>
+<li>Description
+<ul>
+<li>Server가 Receiver들에게 Patient 정보를 전송합니다.</li>
+</ul>
+</li>
+<li>Client Request
+<ul>
+<li>sender:
+<ul>
+<li>2  (VXvue)</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: receiver 참조</a></li>
+</ul>
+</li>
+<li>receiver :
+<ul>
+<li>106 (Display)</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: receiver 참조</a></li>
+</ul>
+</li>
+<li>command:
+<ul>
+<li>101 (setPatientInfo)</li>
+</ul>
+</li>
+<li>data
+<ul>
+<li>patientId
+<ul>
+<li>type: string</li>
+</ul>
+</li>
+<li>patientName
+<ul>
+<li>type: string | null</li>
+</ul>
+</li>
+<li>patientBirth
+<ul>
+<li>type: string | null</li>
+<li>format: date
+<ul>
+<li>&quot;Date in the format YYYY-MM-DD, Following ISO 8601&quot;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>example</li>
+</ul>
+<pre class="hljs"><code><div>  {
+    <span class="hljs-attr">"sender"</span>: <span class="hljs-number">2</span>,     <span class="hljs-comment">// 2: VXvue(VSS)</span>
+    <span class="hljs-attr">"receiver"</span>: <span class="hljs-number">106</span>,  <span class="hljs-comment">// 106: Display</span>
+    <span class="hljs-attr">"command"</span>: <span class="hljs-number">101</span>,  <span class="hljs-comment">// 101: setPatientInfo</span>
+    <span class="hljs-attr">"data"</span>: {
+      <span class="hljs-attr">"patientId"</span>: <span class="hljs-string">"EM-240906-134326"</span>,
+      <span class="hljs-attr">"patientName"</span>: <span class="hljs-string">"Doe^John"</span>,
+      <span class="hljs-attr">"patientBirth"</span>: <span class="hljs-string">"1988-02-14"</span>
+    }
+  }
+</div></code></pre>
+</li>
+</ul>
+<h4 id="send-protocolstep-information">Send Protocol(Step) Information</h4>
+<ul>
+<li>Description
+<ul>
+<li>Server가 Receiver들에게 Protocol(Step) 정보를 전송합니다.</li>
+</ul>
+</li>
+<li>Client Request
+<ul>
+<li>sender:
+<ul>
+<li>2  (VXvue)</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: receiver 참조</a></li>
+</ul>
+</li>
+<li>receiver :
+<ul>
+<li>106 (Display)</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: receiver 참조</a></li>
+</ul>
+</li>
+<li>command:
+<ul>
+<li>601 (sendStepInfo)</li>
+</ul>
+</li>
+<li>data
+<ul>
+<li>bodypartAlias
+<ul>
+<li>type: string | null</li>
+</ul>
+</li>
+<li>projectionAlias
+<ul>
+<li>type: string | null</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>example</li>
+</ul>
+<pre class="hljs"><code><div>  {
+    <span class="hljs-attr">"sender"</span>: <span class="hljs-number">2</span>,     <span class="hljs-comment">// 2: VXvue(VSS)</span>
+    <span class="hljs-attr">"receiver"</span>: <span class="hljs-number">106</span>,  <span class="hljs-comment">// 106: Display</span>
+    <span class="hljs-attr">"command"</span>: <span class="hljs-number">601</span>,  <span class="hljs-comment">// 601: sendStepInfo</span>
+    <span class="hljs-attr">"data"</span>: {
+      <span class="hljs-attr">"bodypartAlias"</span>: <span class="hljs-string">"CHEST"</span>,
+      <span class="hljs-attr">"projectionAlias"</span>: <span class="hljs-string">"AP"</span>,
+    }
+  }
+</div></code></pre>
+</li>
+</ul>
+<h4 id="start-studyexam">Start Study(Exam)</h4>
+<ul>
+<li>Description
+<ul>
+<li>Server가 Receiver들에게 Study가 시작되었음을 알립니다.</li>
+</ul>
+</li>
+<li>Client Request
+<ul>
+<li>sender:
+<ul>
+<li>2 (VXvue)</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: receiver 참조</a></li>
+</ul>
+</li>
+<li>receiver :
+<ul>
+<li>106 (Display)</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: receiver 참조</a></li>
+</ul>
+</li>
+<li>command:
+<ul>
+<li>1001 (eventStartExam)</li>
+</ul>
+</li>
+<li>example</li>
+</ul>
+<pre class="hljs"><code><div>  {
+    <span class="hljs-attr">"sender"</span>: <span class="hljs-number">2</span>,      <span class="hljs-comment">// 2: VXvue(VSS)</span>
+    <span class="hljs-attr">"receiver"</span>: <span class="hljs-number">106</span>,  <span class="hljs-comment">// 106: Display</span>
+    <span class="hljs-attr">"command"</span>: <span class="hljs-number">1001</span>,  <span class="hljs-comment">// 1001: eventStartExam</span>
+  }
+</div></code></pre>
+</li>
+</ul>
+<h4 id="complete-studyexam">Complete Study(Exam)</h4>
+<ul>
+<li>Description
+<ul>
+<li>Server가 Receiver들에게 Study가 완료되었음을 알립니다.</li>
+</ul>
+</li>
+<li>Client Request
+<ul>
+<li>sender:
+<ul>
+<li>2 (VXvue)</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: receiver 참조</a></li>
+</ul>
+</li>
+<li>receiver :
+<ul>
+<li>106 (Display)</li>
+<li><a href="#%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EC%9D%98">공통 메시지 구조 정의: receiver 참조</a></li>
+</ul>
+</li>
+<li>command:
+<ul>
+<li>1002 (eventCompleteExam)</li>
+</ul>
+</li>
+<li>example</li>
+</ul>
+<pre class="hljs"><code><div>  {
+    <span class="hljs-attr">"sender"</span>: <span class="hljs-number">2</span>,      <span class="hljs-comment">// 2: VXvue(VSS)</span>
+    <span class="hljs-attr">"receiver"</span>: <span class="hljs-number">106</span>,  <span class="hljs-comment">// 106: Display</span>
+    <span class="hljs-attr">"command"</span>: <span class="hljs-number">1002</span>,  <span class="hljs-comment">// 1002: eventCompleteExam</span>
+  }
+</div></code></pre>
+</li>
+</ul>
+
+</body>
+</html>
